@@ -1,75 +1,53 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, Image, Button } from 'react-native';
+import { withExpoSnack } from 'nativewind';
+import { Text, View, FlatList, Image, Pressable } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { removeItem } from '../redux/features/cartSlice';
+import { styled } from 'nativewind';
 
-export default function Cart() {
+const StyledView = styled(View)
+const StyledText = styled(Text)
+const StyledImage = styled(Image)
+const StyledButton = styled(Pressable)
+
+const Cart = () => {
     const dispatch = useAppDispatch();
     const cart = useAppSelector(state => state.cart);
-    const items = cart.items
+    const items = cart.items;
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>My Cart</Text>
+        <StyledView className="container mx-auto mb-12">
+            <StyledText className='text-xl font-bold text-center my-3'>My Cart</StyledText>
             <FlatList
                 data={items}
                 renderItem={({ item }: any) => {
                     return (
-                        <View style={styles.item}>
-                            <View>
-                                <Image
-                                    style={styles.image}
+                        <StyledView className='rounded-2xl bg-white flex-row justify-between items-center p-4 m-4'>
+                            <StyledView className='flex-row justify-center items-center'>
+                                <StyledImage
+                                    className='w-20 h-20 rounded-2xl mb-2'
                                     source={{
                                         uri: `${item.image}`,
                                     }}
                                 />
-                            </View>
-                            <View>
-                                <Text style={styles.name}>{item.name}</Text>
-                                <Text style={styles.name}>{item.price}</Text>
-                            </View>
-                            <View>
-                                <Button title="Remove" onPress={() => dispatch(removeItem(item))} />
-                            </View>
-                        </View>
+                                <StyledView className='ml-1'>
+                                    <StyledText className='text-base font-semibold'>{item.name}</StyledText>
+                                    <StyledText className='text-sm mb-2'>{item.category}</StyledText>
+                                </StyledView>
+                            </StyledView>
+                            <StyledView>
+                                <StyledText className='text-lg font-bold'>$ {item.price}</StyledText>
+                                <StyledButton className='bg-indigo-900 px-1 py-2 rounded-2xl mt-1' onPress={() => dispatch(removeItem(item))}>
+                                    <StyledText className='text-center text-white font-semibold'>Remove</StyledText>
+                                </StyledButton>
+                            </StyledView>
+                        </StyledView>
                     )
                 }}
             />
             <StatusBar style="auto" />
-        </View>
+        </StyledView>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    title: {
-        fontSize: 22,
-        fontWeight: "bold",
-        marginTop: 30,
-        textAlign: "center",
-    },
-    item: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 12,
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-    },
-    image: {
-        width: 60,
-        height: 60,
-        borderRadius: 15
-    },
-    name: {
-        fontSize: 18,
-    },
-    price: {
-        fontSize: 15,
-    }
-});
+export default withExpoSnack(Cart);
