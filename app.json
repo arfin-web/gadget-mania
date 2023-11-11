@@ -11,6 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "scheme": "gadget-mania-scheme",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -25,6 +29,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
