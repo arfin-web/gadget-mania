@@ -1,34 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, Image, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, Button } from 'react-native';
 import Items from '../data/Items'
-
-const Item = ({ name, price, image }) => (
-    <View style={styles.item}>
-        <View>
-            <Image
-                style={styles.image}
-                source={{
-                    uri: `${image}`,
-                }}
-            />
-        </View>
-        <View>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.name}>{price}</Text>
-        </View>
-        <View>
-            <Button title="Add to Cart" onPress={() => Alert.alert("Product Added")} />
-        </View>
-    </View>
-);
+import { useAppDispatch } from '../redux/hooks';
+import { addItem } from '../redux/features/cartSlice';
 
 export default function Index() {
+    const dispatch = useAppDispatch();
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Welcome to Gadget Mania</Text>
             <FlatList
                 data={Items}
-                renderItem={({ item }: any) => <Item name={item.name} price={item.price} image={item.image} />}
+                renderItem={({ item }: any) => {
+                    return (
+                        <View style={styles.item}>
+                            <View>
+                                <Image
+                                    style={styles.image}
+                                    source={{
+                                        uri: `${item.image}`,
+                                    }}
+                                />
+                            </View>
+                            <View>
+                                <Text style={styles.name}>{item.name}</Text>
+                                <Text style={styles.name}>{item.price}</Text>
+                            </View>
+                            <View>
+                                <Button title="Add to Cart" onPress={() => dispatch(addItem(item))} />
+                            </View>
+                        </View>
+                    )
+                }}
                 keyExtractor={item => item.id}
             />
             <StatusBar style="auto" />
