@@ -5,7 +5,7 @@ import { store } from '../redux/store';
 import Cart from '../components/Cart';
 
 export default function Layout() {
-    return <>
+    return (
         <Provider store={store}>
             <Tabs screenOptions={{
                 headerRight: () => <Cart />
@@ -39,5 +39,5 @@ export default function Layout() {
                 />
             </Tabs>
         </Provider>
-    </>
+    )
 }
